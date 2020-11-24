@@ -1,7 +1,6 @@
-#! /bin/sh
+#! /usr/bin/env bash
 
 OTHER_PROJECTS="${OTHER_PROJECTS}
-mulle-objc/mulle-objc-developer;latest
 mulle-c/mulle-c-developer;latest
 mulle-sde/mulle-test;latest"
 SDE_PROJECTS="${SDE_PROJECTS}
@@ -10,7 +9,73 @@ mulle-sde-developer;latest"
 export SDE_PROJECTS
 export OTHER_PROJECTS
 
-curl -L -O 'https://raw.githubusercontent.com/mulle-sde/mulle-sde/release/bin/installer-all' && \
-chmod 755 installer-all && \
-./installer-all ~ no
+MULLE_UNAME="`uname | tr '[A-Z]' '[a-z]'`"
+MULLE_UNAME="${MULLE_UNAME%%_*}"
+MULLE_UNAME="${MULLE_UNAME%64}"
 
+
+install_mulle_sde()
+{
+   curl -L -O 'https://raw.githubusercontent.com/mulle-sde/mulle-sde/release/bin/installer-all' && \
+   chmod 755 installer-all && \
+   ./installer-all ~ no
+}
+
+
+install_mulle_clang_ubuntu()
+{
+   local LSB_RELEASE="$1"
+
+   sudo apt-get update &&
+   sudo apt-get install curl 
+
+   curl -sS https://www.codeon.de/dists/codeon-pub.asc | sudo apt-key add -
+   echo "deb [arch=all] http://www.mulle-kybernetik.com $LSB_RELEASE main" | sudo tee "/etc/apt/sources.list.d/mulle-kybernetik.com-main.list" > /dev/null
+
+   sudo apt-get update &&
+   sudo apt-get install mulle-clang 
+}
+
+
+install_mulle_clang()
+{
+   case "${MULLE_UNAME}" in 
+      darwin)
+         brew install codeon-gmbh/software/mulle-clang
+      ;;
+
+      linux)
+         LSB_RELEASE="`lsb_release -c -s`"
+         case "$LSB_RELEASE" in 
+            bionic|focal|xenial)
+               install_mulle_clang_ubuntu "$LSB_RELEASE"
+               return $?
+            ;;
+
+            bullseye)
+               LSB_RELEASE="focal"
+            ;;
+
+            buster)
+               LSB_RELEASE="bionic"
+            ;;
+
+            stretch)
+               LSB_RELEASE="xenial"
+            ;;
+         esac
+      ;;
+
+      *)
+         echo "Unsupported OS ${MULLE_UNAME}" >&2
+         exit 1
+      ;;
+   esac
+
+   sudo curl -L -O "http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb"
+   sudo dpkg --install mulle-clang-10.0.0.2-${LSB_RELEASE}-amd64.deb   
+}
+
+
+install_mulle_clang
+install_mulle_sde
