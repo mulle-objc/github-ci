@@ -22,19 +22,6 @@ install_mulle_sde()
 }
 
 
-install_mulle_clang_ubuntu()
-{
-   local LSB_RELEASE="$1"
-
-   ( curl -sS https://www.codeon.de/dists/codeon-pub.asc \
-   | sudo apt-key add - ) &&
-   ( echo "deb [arch=all] http://www.mulle-kybernetik.com $LSB_RELEASE main" \
-   | sudo tee "/etc/apt/sources.list.d/mulle-kybernetik.com-main.list" > /dev/null ) &&
-
-   sudo apt-get update &&
-   sudo apt-get install mulle-clang 
-}
-
 
 install_mulle_clang()
 {
@@ -47,8 +34,6 @@ install_mulle_clang()
          LSB_RELEASE="`lsb_release -c -s`"
          case "$LSB_RELEASE" in 
             bionic|focal|xenial)
-               install_mulle_clang_ubuntu "$LSB_RELEASE"
-               return $?
             ;;
 
             bullseye)
