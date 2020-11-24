@@ -26,11 +26,10 @@ install_mulle_clang_ubuntu()
 {
    local LSB_RELEASE="$1"
 
-   sudo apt-get update &&
-   sudo apt-get install curl 
-
-   curl -sS https://www.codeon.de/dists/codeon-pub.asc | sudo apt-key add -
-   echo "deb [arch=all] http://www.mulle-kybernetik.com $LSB_RELEASE main" | sudo tee "/etc/apt/sources.list.d/mulle-kybernetik.com-main.list" > /dev/null
+   ( curl -sS https://www.codeon.de/dists/codeon-pub.asc \
+   | sudo apt-key add - ) &&
+   ( echo "deb [arch=all] http://www.mulle-kybernetik.com $LSB_RELEASE main" \
+   | sudo tee "/etc/apt/sources.list.d/mulle-kybernetik.com-main.list" > /dev/null ) &&
 
    sudo apt-get update &&
    sudo apt-get install mulle-clang 
@@ -72,10 +71,10 @@ install_mulle_clang()
       ;;
    esac
 
-   sudo curl -L -O "http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb"
+   sudo curl -L -O "http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb" &&
    sudo dpkg --install mulle-clang-10.0.0.2-${LSB_RELEASE}-amd64.deb   
 }
 
 
-install_mulle_clang
+install_mulle_clang &&
 install_mulle_sde
