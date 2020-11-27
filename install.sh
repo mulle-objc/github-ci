@@ -28,6 +28,7 @@ install_mulle_clang()
    case "${MULLE_UNAME}" in 
       darwin)
          brew install codeon-gmbh/software/mulle-clang
+         return $?
       ;;
 
       linux)
