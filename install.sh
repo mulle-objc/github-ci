@@ -65,7 +65,7 @@ install_mulle_clang()
    case "${provider}" in
       codeon)
          url="http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64"
-         sudo curl -L -O
+      ;;
 
       github)
          url="http://github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2"
