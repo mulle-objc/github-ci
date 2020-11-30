@@ -4,7 +4,7 @@ OTHER_PROJECTS="${OTHER_PROJECTS}
 mulle-c/mulle-c-developer;latest
 mulle-sde/mulle-test;latest"
 SDE_PROJECTS="${SDE_PROJECTS}
-mulle-sde-developer;latest" 
+mulle-sde-developer;latest"
 
 export SDE_PROJECTS
 export OTHER_PROJECTS
@@ -26,9 +26,12 @@ install_mulle_sde()
 install_mulle_clang()
 {
    local provider
-   
+   local url
+   local filename
+
    provider="github"
-   case "${MULLE_UNAME}" in 
+
+   case "${MULLE_UNAME}" in
       darwin)
          brew install codeon-gmbh/software/mulle-clang
          return $?
@@ -36,7 +39,7 @@ install_mulle_clang()
 
       linux)
          LSB_RELEASE="`lsb_release -c -s`"
-         case "$LSB_RELEASE" in 
+         case "$LSB_RELEASE" in
             focal|bullseye)
                LSB_RELEASE="focal"
                provider="codeon"
@@ -57,18 +60,21 @@ install_mulle_clang()
          exit 1
       ;;
    esac
+   filename="mulle-clang-10.0.0.2-${LSB_RELEASE}-amd64.deb"
 
-   case "${provider}" in 
+   case "${provider}" in
       codeon)
-         sudo curl -L -O "http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb" || return 1
-      ;;
-      
+         url="http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64"
+         sudo curl -L -O
+
       github)
-         sudo curl -L -O "http:github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb" || return 1
+         url="http://github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2"
       ;;
-   esac      
-        
-   sudo dpkg --install mulle-clang-10.0.0.2-${LSB_RELEASE}-amd64.deb   
+   esac
+   url="${url}/${filename}"
+
+   sudo curl -L -O "${url}" &&
+   sudo dpkg --install "${filename}"
 }
 
 
