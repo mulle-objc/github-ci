@@ -25,6 +25,9 @@ install_mulle_sde()
 
 install_mulle_clang()
 {
+   local provider
+   
+   provider="github"
    case "${MULLE_UNAME}" in 
       darwin)
          brew install codeon-gmbh/software/mulle-clang
@@ -34,18 +37,16 @@ install_mulle_clang()
       linux)
          LSB_RELEASE="`lsb_release -c -s`"
          case "$LSB_RELEASE" in 
-            bionic|focal|xenial)
-            ;;
-
-            bullseye)
+            focal|bullseye)
                LSB_RELEASE="focal"
+               provider="codeon"
             ;;
 
-            buster)
+            bionic|buster)
                LSB_RELEASE="bionic"
             ;;
 
-            stretch)
+            xenial|stretch)
                LSB_RELEASE="xenial"
             ;;
          esac
@@ -57,7 +58,16 @@ install_mulle_clang()
       ;;
    esac
 
-   sudo curl -L -O "http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb" &&
+   case "${provider}" in 
+      codeon)
+         sudo curl -L -O "http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb" || return 1
+      ;;
+      
+      github)
+         sudo curl -L -O "http:github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2/mulle-clang-10.0.0.2-$LSB_RELEASE-amd64.deb" || return 1
+      ;;
+   esac      
+        
    sudo dpkg --install mulle-clang-10.0.0.2-${LSB_RELEASE}-amd64.deb   
 }
 
