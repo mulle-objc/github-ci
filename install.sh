@@ -1,27 +1,5 @@
 #! /usr/bin/env bash
 
-OTHER_PROJECTS="${OTHER_PROJECTS}
-mulle-c/mulle-c-developer;latest
-mulle-sde/mulle-test;latest"
-SDE_PROJECTS="${SDE_PROJECTS}
-mulle-sde-developer;latest"
-
-export SDE_PROJECTS
-export OTHER_PROJECTS
-
-MULLE_UNAME="`uname | tr '[A-Z]' '[a-z]'`"
-MULLE_UNAME="${MULLE_UNAME%%_*}"
-MULLE_UNAME="${MULLE_UNAME%64}"
-
-
-install_mulle_sde()
-{
-   curl -L -O 'https://raw.githubusercontent.com/mulle-sde/mulle-sde/release/bin/installer-all' && \
-   chmod 755 installer-all && \
-   ./installer-all ~ no
-}
-
-
 
 install_mulle_clang()
 {
@@ -78,5 +56,9 @@ install_mulle_clang()
 }
 
 
-install_mulle_clang &&
-install_mulle_sde
+MULLE_UNAME="`uname | tr '[A-Z]' '[a-z]'`"
+MULLE_UNAME="${MULLE_UNAME%%_*}"
+MULLE_UNAME="${MULLE_UNAME%64}"
+
+
+install_mulle_clang
