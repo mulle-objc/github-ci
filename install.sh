@@ -6,9 +6,13 @@ install_mulle_clang()
    local provider
    local url
    local filename
-
+   local rc
+   
    provider="github"
-
+   version="11.0.0.0"
+   repo="mulle-clang-project"
+   rc=""
+   
    case "${MULLE_UNAME}" in
       darwin)
          brew install codeon-gmbh/software/mulle-clang
@@ -19,17 +23,18 @@ install_mulle_clang()
          LSB_RELEASE="`lsb_release -c -s`"
          case "$LSB_RELEASE" in
             focal|bullseye)
-               LSB_RELEASE="focal"
-               provider="codeon"
+               codename="bullseye"
             ;;
 
             bionic|buster)
-               LSB_RELEASE="bionic"
+               codename="buster"
             ;;
-
-            xenial|stretch)
-               LSB_RELEASE="xenial"
+            
+            *)
+               echo "Unsupported debian/ubuntu release  ${LSB_RELEASE}" >&2
+               exit 1
             ;;
+         
          esac
       ;;
 
@@ -41,24 +46,15 @@ install_mulle_clang()
 
    case "${GITHUB_REF}" in
       */prerelease|*/*-prerelease)
-         version="11.0.0.0"
-         repo="mulle-clang-project"
          rc="-RC2"
-      ;;
-
-      *)
-         # soon or already obsolete
-         version="10.0.0.2"
-         repo="mulle-clang"
-         rc=""
       ;;
    esac
 
-   filename="${repo}-${version}${rc}-${LSB_RELEASE}-amd64.deb"
+   filename="${repo}-${version}${rc}-${codename}-amd64.deb"
 
    case "${provider}" in
       codeon)
-         url="http://download.codeon.de/dists/$LSB_RELEASE/main/binary-amd64"
+         url="http://download.codeon.de/dists/${codename}/main/binary-amd64"
       ;;
 
       github)
