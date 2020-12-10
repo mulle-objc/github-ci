@@ -1,18 +1,20 @@
 #! /usr/bin/env bash
 
-
+set -x
 install_mulle_clang()
 {
    local provider
    local url
    local filename
+   local packagename
    local rc
-   
+
    provider="github"
    version="11.0.0.0"
    repo="mulle-clang-project"
+   packagename="mulle-clang"
    rc=""
-   
+
    case "${MULLE_UNAME}" in
       darwin)
          brew install codeon-gmbh/software/mulle-clang
@@ -20,7 +22,7 @@ install_mulle_clang()
       ;;
 
       linux)
-         LSB_RELEASE="`lsb_release -c -s`"
+         LSB_RELEASE="${LSB_RELEASE:-`lsb_release -c -s`}"
          case "$LSB_RELEASE" in
             focal|bullseye)
                codename="bullseye"
@@ -29,12 +31,12 @@ install_mulle_clang()
             bionic|buster)
                codename="buster"
             ;;
-            
+
             *)
                echo "Unsupported debian/ubuntu release  ${LSB_RELEASE}" >&2
                exit 1
             ;;
-         
+
          esac
       ;;
 
@@ -50,7 +52,8 @@ install_mulle_clang()
       ;;
    esac
 
-   filename="${repo}-${version}${rc}-${codename}-amd64.deb"
+   # https://github.com/Codeon-GmbH/mulle-clang-project/releases/download/11.0.0.0-RC2/mulle-clang-11.0.0.0-buster-amd64.deb
+   filename="${packagename}-${version}-${codename}-amd64.deb"
 
    case "${provider}" in
       codeon)
@@ -59,13 +62,14 @@ install_mulle_clang()
 
       github)
          # https://github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2/mulle-clang-10.0.0.2-bionic-amd64.deb
+         # https://github.com/Codeon-GmbH/mulle-clang-project/releases/download/11.0.0.0-RC2/mulle-clang-11.0.0.0-buster-amd64.deb
          url="https://github.com/Codeon-GmbH/${repo}/releases/download/${version}${rc}"
       ;;
    esac
 
    url="${url}/${filename}"
 
-   sudo curl -L -O "${url}" &&
+   curl -L -O "${url}" &&
    sudo dpkg --install "${filename}"
 }
 
