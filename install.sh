@@ -38,7 +38,23 @@ install_mulle_clang()
          exit 1
       ;;
    esac
-   filename="mulle-clang-10.0.0.2-${LSB_RELEASE}-amd64.deb"
+
+   case "${GITHUB_REF}" in
+      */prerelease|*/*-prerelease)
+         version="11.0.0.0"
+         repo="mulle-clang-project"
+         rc="-RC2"
+      ;;
+
+      *)
+         # soon or already obsolete
+         version="10.0.0.2"
+         repo="mulle-clang"
+         rc=""
+      ;;
+   esac
+
+   filename="${repo}-${version}${rc}-${LSB_RELEASE}-amd64.deb"
 
    case "${provider}" in
       codeon)
@@ -46,9 +62,11 @@ install_mulle_clang()
       ;;
 
       github)
-         url="http://github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2"
+         # https://github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2/mulle-clang-10.0.0.2-bionic-amd64.deb
+         url="https://github.com/Codeon-GmbH/${repo}/releases/download/${version}${rc}"
       ;;
    esac
+
    url="${url}/${filename}"
 
    sudo curl -L -O "${url}" &&
