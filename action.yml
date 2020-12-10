@@ -1,5 +1,5 @@
-name: 'MulleSDE-CI'
-description: 'Run mulle-sde craft and test'
+name: 'MulleClang'
+description: 'Install mulle-clang compiler'
 runs:
   using: "composite"
   steps: 
