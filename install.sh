@@ -1,6 +1,5 @@
 #! /usr/bin/env bash
 
-set -x
 install_mulle_clang()
 {
    local provider
@@ -13,7 +12,7 @@ install_mulle_clang()
    version="11.0.0.0"
    repo="mulle-clang-project"
    packagename="mulle-clang"
-   rc=""
+   rc="-RC2"  # change at release back to ""
 
    case "${MULLE_UNAME}" in
       darwin)
