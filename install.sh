@@ -12,7 +12,7 @@ install_mulle_clang()
    version="11.0.0.0"
    repo="mulle-clang-project"
    packagename="mulle-clang"
-   rc="-RC2"  # change at release back to ""
+   rc=""  # change at release back to ""
 
    case "${MULLE_UNAME}" in
       darwin)
@@ -47,7 +47,7 @@ install_mulle_clang()
 
    case "${GITHUB_REF}" in
       */prerelease|*/*-prerelease)
-         rc="-RC2"
+         rc="" # could be -RC2 or so, it's inconvenient
       ;;
    esac
 
@@ -67,6 +67,8 @@ install_mulle_clang()
    esac
 
    url="${url}/${filename}"
+
+   echo "Downloading ${url} ..." >&2
 
    curl -L -O "${url}" &&
    sudo dpkg --install "${filename}"
