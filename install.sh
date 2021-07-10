@@ -16,8 +16,17 @@ install_mulle_clang()
 
    case "${MULLE_UNAME}" in
       darwin)
-         brew install codeon-gmbh/software/mulle-clang
-         return $?
+         case "${GITHUB_REF}" in
+            */prerelease|*/*-prerelease)
+               brew install codeon-gmbh/prerelease/mulle-clang-project
+               return $?
+            ;;
+            
+            *)
+               brew install codeon-gmbh/software/mulle-clang-project
+               return $?
+            ;;            
+         esac      
       ;;
 
       linux)
@@ -47,7 +56,8 @@ install_mulle_clang()
 
    case "${GITHUB_REF}" in
       */prerelease|*/*-prerelease)
-         rc="" # could be -RC2 or so, it's inconvenient
+         rc="-RC2" # could be -RC2 or so, it's inconvenient
+         version="12.0.0.0"
       ;;
    esac
 
