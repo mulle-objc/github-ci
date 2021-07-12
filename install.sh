@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+set -x
+
 install_mulle_clang()
 {
    local provider
