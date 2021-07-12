@@ -32,16 +32,16 @@ install_mulle_clang()
       linux)
          LSB_RELEASE="${LSB_RELEASE:-`lsb_release -c -s`}"
          case "$LSB_RELEASE" in
-            focal|bullseye)
+            focal|bullseye|20\.*) # broken catthehacker image fix for act
                codename="bullseye"
             ;;
 
-            bionic|buster)
+            bionic|buster|18\.*)
                codename="buster"
             ;;
 
             *)
-               echo "Unsupported debian/ubuntu release  ${LSB_RELEASE}" >&2
+               echo "Unsupported debian/ubuntu release \"${LSB_RELEASE}\"" >&2
                exit 1
             ;;
 
