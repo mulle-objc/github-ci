@@ -9,7 +9,7 @@ install_mulle_clang()
    local rc
 
    provider="github"
-   version="11.0.0.0"
+   version="12.0.0.0"
    repo="mulle-clang-project"
    packagename="mulle-clang"
    rc=""  # change at release back to ""
@@ -57,7 +57,6 @@ install_mulle_clang()
    case "${GITHUB_REF}" in
       */prerelease|*/*-prerelease)
          rc="-RC2" # could be -RC2 or so, it's inconvenient
-         version="12.0.0.0"
       ;;
    esac
 
