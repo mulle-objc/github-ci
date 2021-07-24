@@ -6,3 +6,6 @@ This installs [mulle-objc-developer](//github.com/mulle-objc/mulle-objc-develope
 It's based on [mulle-sde/github-ci](//github.com/mulle-sde/github-ci), which installs [mulle-sde](//mulle-sde.github.io).
 
 
+## repush / retag
+
+These scripts are useful, if you create a new version of this action.
