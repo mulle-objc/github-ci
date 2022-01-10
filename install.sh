@@ -9,7 +9,7 @@ install_mulle_clang()
    local rc
 
    provider="github"
-   version="12.0.0.0"
+   version="13.0.0.1"
    repo="mulle-clang-project"
    packagename="mulle-clang"
    rc=""  # change at release back to ""
@@ -18,12 +18,12 @@ install_mulle_clang()
       darwin)
          case "${GITHUB_REF}" in
             */prerelease|*/*-prerelease)
-               brew install codeon-gmbh/prerelease/mulle-clang-project
+               brew install mulle-objc/prerelease/mulle-clang-project
                return $?
             ;;
             
             *)
-               brew install codeon-gmbh/software/mulle-clang-project
+               brew install mulle-objc/software/mulle-clang-project
                return $?
             ;;            
          esac      
@@ -56,7 +56,7 @@ install_mulle_clang()
 
    case "${GITHUB_REF}" in
       */prerelease|*/*-prerelease)
-         rc="-RC2" # could be -RC2 or so, it's inconvenient
+         # rc="-RC2" # could be -RC2 or so, it's inconvenient
       ;;
    esac
 
@@ -64,14 +64,10 @@ install_mulle_clang()
    filename="${packagename}-${version}-${codename}-amd64.deb"
 
    case "${provider}" in
-      codeon)
-         url="http://download.codeon.de/dists/${codename}/main/binary-amd64"
-      ;;
-
       github)
          # https://github.com/Codeon-GmbH/mulle-clang/releases/download/10.0.0.2/mulle-clang-10.0.0.2-bionic-amd64.deb
          # https://github.com/Codeon-GmbH/mulle-clang-project/releases/download/11.0.0.0-RC2/mulle-clang-11.0.0.0-buster-amd64.deb
-         url="https://github.com/Codeon-GmbH/${repo}/releases/download/${version}${rc}"
+         url="https://github.com/mulle-cc/${repo}/releases/download/${version}${rc}"
       ;;
    esac
 
