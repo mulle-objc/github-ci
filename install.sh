@@ -18,11 +18,13 @@ install_mulle_clang()
       darwin)
          case "${GITHUB_REF}" in
             */prerelease|*/*-prerelease)
+               echo "Installing mulle-objc/prerelease/mulle-clang-project ..." >&2
                brew install mulle-objc/prerelease/mulle-clang-project
                return $?
             ;;
             
             *)
+               echo "Installing mulle-objc/software/mulle-clang-project ..." >&2
                brew install mulle-objc/software/mulle-clang-project
                return $?
             ;;            
@@ -76,6 +78,7 @@ install_mulle_clang()
    echo "Downloading ${url} ..." >&2
 
    curl -L -O "${url}" &&
+   echo "Installing ${filename} ..." >&2
    sudo dpkg --install "${filename}"
 }
 
