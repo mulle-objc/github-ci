@@ -9,7 +9,7 @@ install_mulle_clang()
    local rc
 
    provider="github"
-   version="13.0.0.1"
+   version="14.0.6.2"
    repo="mulle-clang-project"
    packagename="mulle-clang"
    rc=""  # change at release back to ""
@@ -24,6 +24,13 @@ install_mulle_clang()
             ;;
             
             *)
+               if [ "${MULLE_HOSTNAME}" = "ci-prerelease" ]
+               then
+                  echo "Installing mulle-objc/prerelease/mulle-clang-project ..." >&2
+                  brew install mulle-objc/prerelease/mulle-clang-project
+                  return $?
+               fi
+
                echo "Installing mulle-objc/software/mulle-clang-project ..." >&2
                brew install mulle-objc/software/mulle-clang-project
                return $?
@@ -59,6 +66,14 @@ install_mulle_clang()
    case "${GITHUB_REF}" in
       */prerelease|*/*-prerelease)
          # rc="-RC2" # could be -RC2 or so, it's inconvenient
+      ;;
+
+      *)
+         if [ "${MULLE_HOSTNAME}" = "ci-prerelease" ]
+         then
+            # rc="-RC2" # could be -RC2 or so, it's inconvenient
+            :
+         fi
       ;;
    esac
 
