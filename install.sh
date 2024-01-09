@@ -9,7 +9,7 @@ install_mulle_clang()
    local rc
 
    provider="github"
-   version="14.0.6.2"
+   version="17.0.6.0"
    repo="mulle-clang-project"
    packagename="mulle-clang"
    rc=""  # change at release back to ""
@@ -41,6 +41,10 @@ install_mulle_clang()
       linux)
          LSB_RELEASE="${LSB_RELEASE:-`lsb_release -c -s`}"
          case "$LSB_RELEASE" in
+            jammy|bookworm|22\.*)
+               codename="bullseye"
+            ;;
+
             focal|bullseye|20\.*) # broken catthehacker image fix for act
                codename="bullseye"
             ;;
